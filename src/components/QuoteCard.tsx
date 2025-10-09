@@ -16,22 +16,24 @@ export const QuoteCard = () => {
   const fetchQuote = async () => {
     setLoading(true);
     try {
-      const response = await fetch("https://api.quotable.io/random");
+      const response = await fetch("https://zenquotes.io/api/random");
+      if (!response.ok) throw new Error('Failed to fetch');
       const data = await response.json();
       setQuote({
-        content: data.content,
-        author: data.author,
+        content: data[0].q,
+        author: data[0].a,
       });
     } catch (error) {
-      toast({
-        title: "Failed to fetch quote",
-        description: "Using a default inspirational quote",
-        variant: "destructive",
-      });
-      setQuote({
-        content: "The future belongs to those who believe in the beauty of their dreams.",
-        author: "Eleanor Roosevelt",
-      });
+      // Fallback quotes
+      const fallbackQuotes = [
+        { content: "The future belongs to those who believe in the beauty of their dreams.", author: "Eleanor Roosevelt" },
+        { content: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill" },
+        { content: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
+        { content: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+        { content: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson" }
+      ];
+      const randomQuote = fallbackQuotes[Math.floor(Math.random() * fallbackQuotes.length)];
+      setQuote(randomQuote);
     } finally {
       setLoading(false);
     }
