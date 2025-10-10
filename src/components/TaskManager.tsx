@@ -3,6 +3,8 @@ import { Plus, Check, Trash2, Edit2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { addGamificationPoints } from "./GamificationTracker";
+import { logActivity } from "./InsightsDashboard";
 
 interface Task {
   id: string;
@@ -46,11 +48,22 @@ export const TaskManager = () => {
   };
 
   const toggleTask = (id: string) => {
+    const task = tasks.find((t) => t.id === id);
     setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
+      tasks.map((t) =>
+        t.id === id ? { ...t, completed: !t.completed } : t
       )
     );
+    
+    // Award points when completing a task
+    if (task && !task.completed) {
+      addGamificationPoints("task_completed", 10);
+      logActivity("task_completed", 10);
+      toast({
+        title: "Task completed! +10 XP",
+        description: "You're making great progress!",
+      });
+    }
   };
 
   const deleteTask = (id: string) => {

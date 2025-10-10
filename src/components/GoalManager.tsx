@@ -3,6 +3,8 @@ import { Plus, Target, Trash2, Edit2, X, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { addGamificationPoints } from "./GamificationTracker";
+import { logActivity } from "./InsightsDashboard";
 
 interface Goal {
   id: string;
@@ -46,11 +48,33 @@ export const GoalManager = () => {
   };
 
   const updateProgress = (id: string, progress: number) => {
+    const goal = goals.find((g) => g.id === id);
+    const newProgress = Math.min(100, Math.max(0, progress));
+    
     setGoals(
-      goals.map((goal) =>
-        goal.id === id ? { ...goal, progress: Math.min(100, Math.max(0, progress)) } : goal
+      goals.map((g) =>
+        g.id === id ? { ...g, progress: newProgress } : g
       )
     );
+
+    // Award points for progress
+    if (goal && newProgress > goal.progress) {
+      const points = newProgress === 100 ? 50 : 5;
+      addGamificationPoints("goal_completed", points);
+      logActivity("goal_progress", points);
+      
+      if (newProgress === 100) {
+        toast({
+          title: "Goal completed! +50 XP 🎉",
+          description: "Outstanding achievement!",
+        });
+      } else {
+        toast({
+          title: `Progress updated! +${points} XP`,
+          description: "Keep pushing forward!",
+        });
+      }
+    }
   };
 
   const deleteGoal = (id: string) => {

@@ -35,14 +35,22 @@ export const WeatherWidget = () => {
             
             // Note: In production, use environment variable for API key
             // For now, using mock data to avoid API key issues
-            setWeather({
+            const weatherData = {
               temp: 24,
               condition: "Partly Cloudy",
               location: "Your Location",
               humidity: 65,
               windSpeed: 12,
-            });
+            };
+            
+            setWeather(weatherData);
             setLoading(false);
+            
+            // Emit weather update event for background animation
+            const event = new CustomEvent("weather-update", {
+              detail: { condition: weatherData.condition },
+            });
+            window.dispatchEvent(event);
           },
           (error) => {
             toast({
@@ -51,14 +59,22 @@ export const WeatherWidget = () => {
               variant: "destructive",
             });
             // Use default data
-            setWeather({
+            const weatherData = {
               temp: 22,
               condition: "Clear",
               location: "Default Location",
               humidity: 60,
               windSpeed: 10,
-            });
+            };
+            
+            setWeather(weatherData);
             setLoading(false);
+            
+            // Emit weather update event
+            const event = new CustomEvent("weather-update", {
+              detail: { condition: weatherData.condition },
+            });
+            window.dispatchEvent(event);
           }
         );
       } catch (error) {

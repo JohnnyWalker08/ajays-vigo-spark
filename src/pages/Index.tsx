@@ -5,9 +5,14 @@ import { QuoteCard } from "@/components/QuoteCard";
 import { TaskManager } from "@/components/TaskManager";
 import { GoalManager } from "@/components/GoalManager";
 import { AIInspirationButton } from "@/components/AIInspirationButton";
+import { AnimatedWeatherBackground } from "@/components/AnimatedWeatherBackground";
+import { GamificationTracker } from "@/components/GamificationTracker";
+import { InsightsDashboard } from "@/components/InsightsDashboard";
+import { BadgeNotification } from "@/components/BadgeNotification";
 
 const Index = () => {
   const [isDark, setIsDark] = useState(true);
+  const [weatherCondition, setWeatherCondition] = useState("Clear");
 
   useEffect(() => {
     // Check for saved theme preference or default to dark
@@ -32,10 +37,28 @@ const Index = () => {
     }
   };
 
+  useEffect(() => {
+    // Listen for weather updates from WeatherWidget
+    const handleWeatherUpdate = (event: CustomEvent) => {
+      setWeatherCondition(event.detail.condition);
+    };
+    
+    window.addEventListener("weather-update" as any, handleWeatherUpdate as EventListener);
+    return () => {
+      window.removeEventListener("weather-update" as any, handleWeatherUpdate as EventListener);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-background transition-colors duration-500">
+      {/* Animated weather background */}
+      <AnimatedWeatherBackground condition={weatherCondition} />
+      
       {/* Animated gradient background */}
-      <div className="fixed inset-0 gradient-animate opacity-20 pointer-events-none" />
+      <div className="fixed inset-0 gradient-animate opacity-20 pointer-events-none z-0" />
+      
+      {/* Badge notifications */}
+      <BadgeNotification />
       
       <div className="relative z-10">
         <Header isDark={isDark} toggleTheme={toggleTheme} />
@@ -47,12 +70,14 @@ const Index = () => {
               <QuoteCard />
               <TaskManager />
               <GoalManager />
+              <InsightsDashboard />
               <AIInspirationButton />
             </div>
 
-            {/* Right column - Weather and Time */}
+            {/* Right column - Weather, Stats, and Gamification */}
             <div className="space-y-6">
               <WeatherWidget />
+              <GamificationTracker />
             </div>
           </div>
         </main>

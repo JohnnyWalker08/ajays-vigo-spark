@@ -164,4 +164,100 @@ All colors MUST be HSL.
   .transition-smooth {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
+
+  /* Weather animations */
+  @keyframes rain {
+    0% {
+      transform: translateY(-100vh) translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) translateX(10px);
+      opacity: 0.3;
+    }
+  }
+
+  @keyframes snow {
+    0% {
+      transform: translateY(-100vh) translateX(0) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) translateX(50px) rotate(360deg);
+      opacity: 0.3;
+    }
+  }
+
+  @keyframes float-cloud {
+    0%, 100% {
+      transform: translateX(0) translateY(0);
+    }
+    50% {
+      transform: translateX(20px) translateY(-10px);
+    }
+  }
+
+  @keyframes sun-ray {
+    0%, 100% {
+      opacity: 0.3;
+      transform: scaleY(1);
+    }
+    50% {
+      opacity: 0.6;
+      transform: scaleY(1.2);
+    }
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% {
+      opacity: 0.3;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(1.1);
+    }
+  }
+
+  .animate-rain {
+    animation: rain linear infinite;
+  }
+
+  .animate-snow {
+    animation: snow linear infinite;
+  }
+
+  .animate-float-cloud {
+    animation: float-cloud ease-in-out infinite;
+  }
+
+  .animate-sun-ray {
+    animation: sun-ray ease-in-out infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 3s ease-in-out infinite;
+  }
+
+  /* Glow effects for elements */
+  .glow-text {
+    text-shadow: 0 0 10px hsl(var(--primary) / 0.5);
+  }
+
+  .glow-accent {
+    box-shadow: 0 0 20px hsl(var(--accent) / 0.3),
+                0 0 40px hsl(var(--accent) / 0.2);
+  }
+
+  /* Confetti animation for achievements */
+  @keyframes confetti {
+    0% {
+      transform: translateY(0) rotate(0deg);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(100vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
 }
