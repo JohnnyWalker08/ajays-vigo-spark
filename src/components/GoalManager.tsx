@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { addGamificationPoints } from "./GamificationTracker";
 import { logActivity } from "./InsightsDashboard";
+import { soundEffects } from "@/utils/soundEffects";
+import confetti from "canvas-confetti";
 
 interface Goal {
   id: string;
@@ -64,6 +66,13 @@ export const GoalManager = () => {
       logActivity("goal_progress", points);
       
       if (newProgress === 100) {
+        soundEffects.playAchievement();
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ["#6366f1", "#8b5cf6", "#ec4899"],
+        });
         toast({
           title: "Goal completed! +50 XP 🎉",
           description: "Outstanding achievement!",
@@ -108,7 +117,7 @@ export const GoalManager = () => {
   };
 
   return (
-    <div className="glass rounded-2xl p-6 space-y-4 animate-fade-in">
+    <div className="glass rounded-2xl p-6 space-y-4 animate-fade-in goal-manager">
       <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
         <Target className="w-6 h-6 text-secondary" /> Goals
       </h2>

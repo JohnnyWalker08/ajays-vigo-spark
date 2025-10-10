@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { addGamificationPoints } from "./GamificationTracker";
 import { logActivity } from "./InsightsDashboard";
+import { soundEffects } from "@/utils/soundEffects";
 
 interface Task {
   id: string;
@@ -59,6 +60,7 @@ export const TaskManager = () => {
     if (task && !task.completed) {
       addGamificationPoints("task_completed", 10);
       logActivity("task_completed", 10);
+      soundEffects.playChime();
       toast({
         title: "Task completed! +10 XP",
         description: "You're making great progress!",
@@ -97,7 +99,7 @@ export const TaskManager = () => {
   };
 
   return (
-    <div className="glass rounded-2xl p-6 space-y-4 animate-fade-in">
+    <div className="glass rounded-2xl p-6 space-y-4 animate-fade-in task-manager">
       <h2 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
         <span className="text-primary">✓</span> Tasks
       </h2>

@@ -9,6 +9,12 @@ import { AnimatedWeatherBackground } from "@/components/AnimatedWeatherBackgroun
 import { GamificationTracker } from "@/components/GamificationTracker";
 import { InsightsDashboard } from "@/components/InsightsDashboard";
 import { BadgeNotification } from "@/components/BadgeNotification";
+import { PersonalizedGreeting } from "@/components/PersonalizedGreeting";
+import { MoodSelector } from "@/components/MoodSelector";
+import { FocusMode } from "@/components/FocusMode";
+import { DataExport } from "@/components/DataExport";
+import { OnboardingFlow } from "@/components/OnboardingFlow";
+import { EnhancedWeatherTips } from "@/components/EnhancedWeatherTips";
 
 const Index = () => {
   const [isDark, setIsDark] = useState(true);
@@ -60,6 +66,9 @@ const Index = () => {
       {/* Badge notifications */}
       <BadgeNotification />
       
+      {/* Onboarding flow */}
+      <OnboardingFlow />
+      
       <div className="relative z-10">
         <Header isDark={isDark} toggleTheme={toggleTheme} />
         
@@ -67,6 +76,8 @@ const Index = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
             {/* Left column - Tasks and Goals */}
             <div className="lg:col-span-2 space-y-6">
+              <PersonalizedGreeting />
+              <MoodSelector />
               <QuoteCard />
               <TaskManager />
               <GoalManager />
@@ -77,7 +88,15 @@ const Index = () => {
             {/* Right column - Weather, Stats, and Gamification */}
             <div className="space-y-6">
               <WeatherWidget />
+              <EnhancedWeatherTips 
+                condition={weatherCondition}
+                city="Your Location"
+                sunrise="6:30 AM"
+                sunset="6:45 PM"
+              />
               <GamificationTracker />
+              <FocusMode />
+              <DataExport />
             </div>
           </div>
         </main>

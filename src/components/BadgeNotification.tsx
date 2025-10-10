@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Trophy, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { soundEffects } from "@/utils/soundEffects";
+import confetti from "canvas-confetti";
 
 interface Badge {
   name: string;
@@ -15,6 +17,13 @@ export const BadgeNotification = () => {
     const handleBadgeEarned = (event: CustomEvent) => {
       setBadge(event.detail);
       setShow(true);
+      soundEffects.playAchievement();
+      confetti({
+        particleCount: 150,
+        spread: 100,
+        origin: { y: 0.6 },
+        colors: ["#6366f1", "#8b5cf6", "#ec4899", "#f59e0b"],
+      });
       
       // Auto-hide after 5 seconds
       setTimeout(() => {

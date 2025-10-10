@@ -260,4 +260,38 @@ All colors MUST be HSL.
       opacity: 0;
     }
   }
+
+  /* Utility classes */
+  .gradient-text {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .glass-card {
+    @apply glass rounded-2xl border border-border/50;
+  }
+
+  .glass-input {
+    @apply glass border-border/50 focus:border-primary focus:glow-primary transition-smooth;
+  }
+
+  .neon-glow {
+    @apply glow-primary hover:glow-primary;
+  }
+
+  .hover-scale {
+    @apply transition-transform duration-200 hover:scale-105;
+  }
+
+  /* Focus Mode */
+  body.focus-mode .glass-card:not(.focus-mode-exempt) {
+    @apply opacity-50 blur-sm pointer-events-none;
+  }
+
+  body.focus-mode .task-manager,
+  body.focus-mode .goal-manager {
+    @apply opacity-100 blur-none pointer-events-auto;
+  }
 }
