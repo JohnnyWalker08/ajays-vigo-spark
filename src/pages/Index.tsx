@@ -18,6 +18,9 @@ import { EnhancedWeatherTips } from "@/components/EnhancedWeatherTips";
 import { AIAssistant } from "@/components/AIAssistant";
 import { SmartCalendar } from "@/components/SmartCalendar";
 import { NavigationSidebar } from "@/components/NavigationSidebar";
+import { NotificationCenter } from "@/components/NotificationCenter";
+import { AlarmManager } from "@/components/AlarmManager";
+import { DailyDigest } from "@/components/DailyDigest";
 
 const Index = () => {
   const [isDark, setIsDark] = useState(true);
@@ -104,6 +107,14 @@ const Index = () => {
         return (
           <div className="max-w-4xl mx-auto">
             <SmartCalendar />
+          </div>
+        );
+      case "notifications":
+        return (
+          <div className="max-w-5xl mx-auto space-y-6">
+            <DailyDigest />
+            <NotificationCenter />
+            <AlarmManager />
           </div>
         );
       default:
