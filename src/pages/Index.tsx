@@ -15,10 +15,14 @@ import { FocusMode } from "@/components/FocusMode";
 import { DataExport } from "@/components/DataExport";
 import { OnboardingFlow } from "@/components/OnboardingFlow";
 import { EnhancedWeatherTips } from "@/components/EnhancedWeatherTips";
+import { AIAssistant } from "@/components/AIAssistant";
+import { SmartCalendar } from "@/components/SmartCalendar";
+import { NavigationSidebar } from "@/components/NavigationSidebar";
 
 const Index = () => {
   const [isDark, setIsDark] = useState(true);
   const [weatherCondition, setWeatherCondition] = useState("Clear");
+  const [activeSection, setActiveSection] = useState("dashboard");
 
   useEffect(() => {
     // Check for saved theme preference or default to dark
@@ -55,26 +59,11 @@ const Index = () => {
     };
   }, []);
 
-  return (
-    <div className="min-h-screen bg-background transition-colors duration-500">
-      {/* Animated weather background */}
-      <AnimatedWeatherBackground condition={weatherCondition} />
-      
-      {/* Animated gradient background */}
-      <div className="fixed inset-0 gradient-animate opacity-20 pointer-events-none z-0" />
-      
-      {/* Badge notifications */}
-      <BadgeNotification />
-      
-      {/* Onboarding flow */}
-      <OnboardingFlow />
-      
-      <div className="relative z-10">
-        <Header isDark={isDark} toggleTheme={toggleTheme} />
-        
-        <main className="container mx-auto px-4 py-8 max-w-7xl">
+  const renderContent = () => {
+    switch (activeSection) {
+      case "dashboard":
+        return (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-            {/* Left column - Tasks and Goals */}
             <div className="lg:col-span-2 space-y-6">
               <PersonalizedGreeting />
               <MoodSelector />
@@ -84,8 +73,6 @@ const Index = () => {
               <InsightsDashboard />
               <AIInspirationButton />
             </div>
-
-            {/* Right column - Weather, Stats, and Gamification */}
             <div className="space-y-6">
               <WeatherWidget />
               <EnhancedWeatherTips 
@@ -99,8 +86,69 @@ const Index = () => {
               <DataExport />
             </div>
           </div>
+        );
+      case "tasks":
+        return (
+          <div className="max-w-4xl mx-auto space-y-6">
+            <TaskManager />
+          </div>
+        );
+      case "goals":
+        return (
+          <div className="max-w-4xl mx-auto space-y-6">
+            <GoalManager />
+            <InsightsDashboard />
+          </div>
+        );
+      case "calendar":
+        return (
+          <div className="max-w-4xl mx-auto">
+            <SmartCalendar />
+          </div>
+        );
+      default:
+        return (
+          <div className="max-w-4xl mx-auto">
+            <div className="glass-card p-12 text-center">
+              <h2 className="text-2xl font-bold gradient-text mb-4">Coming Soon</h2>
+              <p className="text-muted-foreground">This feature is under development.</p>
+            </div>
+          </div>
+        );
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-background transition-colors duration-500 flex">
+      {/* Animated weather background */}
+      <AnimatedWeatherBackground condition={weatherCondition} />
+      
+      {/* Animated gradient background */}
+      <div className="fixed inset-0 gradient-animate opacity-20 pointer-events-none z-0" />
+      
+      {/* Badge notifications */}
+      <BadgeNotification />
+      
+      {/* Onboarding flow */}
+      <OnboardingFlow />
+
+      {/* Navigation Sidebar */}
+      <NavigationSidebar 
+        activeSection={activeSection} 
+        onSectionChange={setActiveSection}
+      />
+      
+      {/* Main Content */}
+      <div className="flex-1 relative z-10">
+        <Header isDark={isDark} toggleTheme={toggleTheme} />
+        
+        <main className="container mx-auto px-4 py-8 max-w-7xl lg:pl-8">
+          {renderContent()}
         </main>
       </div>
+
+      {/* AI Assistant */}
+      <AIAssistant />
     </div>
   );
 };
