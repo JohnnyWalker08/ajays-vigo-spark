@@ -26,6 +26,7 @@ const navigationItems: NavigationItem[] = [
   { id: "tasks", label: "Tasks", icon: <CheckSquare className="h-5 w-5" /> },
   { id: "goals", label: "Goals", icon: <Target className="h-5 w-5" /> },
   { id: "calendar", label: "Calendar", icon: <Calendar className="h-5 w-5" /> },
+  { id: "insights", label: "Analytics", icon: <Sparkles className="h-5 w-5" /> },
   { id: "ai", label: "AI Assistant", icon: <Bot className="h-5 w-5" /> },
   { id: "notifications", label: "Notifications", icon: <Bell className="h-5 w-5" /> },
   { id: "settings", label: "Settings", icon: <Settings className="h-5 w-5" /> },

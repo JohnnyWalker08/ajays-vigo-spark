@@ -109,6 +109,13 @@ const Index = () => {
             <SmartCalendar />
           </div>
         );
+      case "insights":
+        return (
+          <div className="max-w-5xl mx-auto space-y-6">
+            <InsightsDashboard />
+            <DataExport />
+          </div>
+        );
       case "notifications":
         return (
           <div className="max-w-5xl mx-auto space-y-6">

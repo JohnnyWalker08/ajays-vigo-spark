@@ -1,26 +1,26 @@
 {
-  "name": "Ajayi's Planner",
-  "short_name": "Vigo Planner",
-  "description": "AI-Powered Daily Planner & Weather Dashboard",
+  "name": "V.I.G.O Spark - AI Planner",
+  "short_name": "V.I.G.O Spark",
+  "description": "AI-Powered Daily Planner with Bible verses, Weather, Tasks & Smart Insights",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0f0f23",
-  "theme_color": "#6366f1",
+  "theme_color": "#00d9ff",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "/placeholder.svg",
+      "src": "/app-icon.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/placeholder.svg",
+      "src": "/app-icon.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ],
-  "categories": ["productivity", "lifestyle"],
+  "categories": ["productivity", "lifestyle", "utilities"],
   "screenshots": []
 }
