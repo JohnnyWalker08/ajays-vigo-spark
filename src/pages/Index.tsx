@@ -21,6 +21,7 @@ import { NavigationSidebar } from "@/components/NavigationSidebar";
 import { NotificationCenter } from "@/components/NotificationCenter";
 import { AlarmManager } from "@/components/AlarmManager";
 import { DailyDigest } from "@/components/DailyDigest";
+import { Settings } from "@/components/Settings";
 
 const Index = () => {
   const [isDark, setIsDark] = useState(true);
@@ -122,6 +123,12 @@ const Index = () => {
             <DailyDigest />
             <NotificationCenter />
             <AlarmManager />
+          </div>
+        );
+      case "settings":
+        return (
+          <div className="max-w-5xl mx-auto">
+            <Settings />
           </div>
         );
       default:
