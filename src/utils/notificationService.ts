@@ -25,18 +25,80 @@ class NotificationService {
   private notifications: Notification[] = [];
   private alarms: Alarm[] = [];
   private listeners: Set<() => void> = new Set();
+  private permissionGranted: boolean = false;
 
   constructor() {
     this.loadFromStorage();
-    this.initializePermissions();
+    this.requestPermissions();
     this.startAlarmChecker();
+    this.registerServiceWorker();
   }
 
-  // Request notification permissions
-  async initializePermissions() {
-    if ('Notification' in window && Notification.permission === 'default') {
-      await Notification.requestPermission();
+  // Register service worker for background notifications
+  private async registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+      try {
+        const registration = await navigator.serviceWorker.register('/sw.js');
+        console.log('Service Worker registered:', registration);
+      } catch (error) {
+        console.error('Service Worker registration failed:', error);
+      }
     }
+  }
+
+  // Request notification permissions with proper UI prompt
+  async requestPermissions(): Promise<boolean> {
+    if (!('Notification' in window)) {
+      console.warn('This browser does not support notifications');
+      return false;
+    }
+
+    if (Notification.permission === 'granted') {
+      this.permissionGranted = true;
+      return true;
+    }
+
+    if (Notification.permission === 'denied') {
+      console.warn('Notifications are blocked. Please enable them in browser settings.');
+      return false;
+    }
+
+    try {
+      const permission = await Notification.requestPermission();
+      this.permissionGranted = permission === 'granted';
+      
+      if (this.permissionGranted) {
+        // Send a test notification to confirm it works
+        this.sendBrowserNotification({
+          id: 'test',
+          title: '🎉 Notifications Enabled!',
+          message: 'You will now receive alerts for tasks, alarms, and reminders.',
+          type: 'achievement',
+          timestamp: new Date(),
+          read: false,
+          priority: 'medium',
+        });
+      }
+      
+      return this.permissionGranted;
+    } catch (error) {
+      console.error('Error requesting notification permission:', error);
+      return false;
+    }
+  }
+
+  // Check if notifications are supported and enabled
+  isNotificationSupported(): boolean {
+    return 'Notification' in window;
+  }
+
+  isNotificationEnabled(): boolean {
+    return this.permissionGranted || Notification.permission === 'granted';
+  }
+
+  getPermissionStatus(): NotificationPermission | 'unsupported' {
+    if (!('Notification' in window)) return 'unsupported';
+    return Notification.permission;
   }
 
   // Add a new notification
@@ -53,33 +115,43 @@ class NotificationService {
     this.notifyListeners();
 
     // Send browser notification if permitted
-    this.sendBrowserNotification(newNotification);
+    if (this.isNotificationEnabled()) {
+      this.sendBrowserNotification(newNotification);
+    }
 
     return newNotification;
   }
 
   // Send browser notification
   private sendBrowserNotification(notification: Notification) {
-    if ('Notification' in window && Notification.permission === 'granted') {
-      const browserNotif = new Notification(notification.title, {
+    if (!this.isNotificationEnabled()) return;
+
+    try {
+      const options: NotificationOptions = {
         body: notification.message,
-        icon: '/placeholder.svg',
-        badge: '/placeholder.svg',
+        icon: '/app-icon.png',
+        badge: '/app-icon.png',
         tag: notification.id,
         requireInteraction: notification.priority === 'high',
-      });
+        silent: false,
+      };
+
+      const browserNotif = new Notification(notification.title, options);
 
       browserNotif.onclick = () => {
         window.focus();
+        this.markAsRead(notification.id);
         if (notification.actionUrl) {
           window.location.href = notification.actionUrl;
         }
       };
 
-      // Vibrate if supported
-      if ('vibrate' in navigator) {
+      // Vibrate if supported (for mobile)
+      if ('vibrate' in navigator && notification.priority === 'high') {
         navigator.vibrate([200, 100, 200]);
       }
+    } catch (error) {
+      console.error('Error sending browser notification:', error);
     }
   }
 
@@ -164,11 +236,32 @@ class NotificationService {
     }
   }
 
+  // Schedule a reminder for a specific time
+  scheduleReminder(title: string, message: string, time: Date) {
+    const now = new Date();
+    const delay = time.getTime() - now.getTime();
+    
+    if (delay > 0) {
+      setTimeout(() => {
+        this.addNotification({
+          title,
+          message,
+          type: 'reminder',
+          priority: 'high',
+        });
+      }, delay);
+    }
+  }
+
   // Check alarms every minute
   private startAlarmChecker() {
+    // Check immediately
+    this.checkAlarms();
+    
+    // Then check every 30 seconds
     setInterval(() => {
       this.checkAlarms();
-    }, 30000); // Check every 30 seconds
+    }, 30000);
   }
 
   private checkAlarms() {
@@ -211,19 +304,23 @@ class NotificationService {
   }
 
   private playAlarmSound() {
-    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
 
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
 
-    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
+      oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
 
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 1);
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 1);
+    } catch (error) {
+      console.error('Error playing alarm sound:', error);
+    }
   }
 
   // Daily digest
@@ -242,6 +339,21 @@ class NotificationService {
       type: 'digest',
       priority: 'medium',
     });
+  }
+
+  // Send a test notification
+  async sendTestNotification() {
+    const hasPermission = await this.requestPermissions();
+    if (hasPermission) {
+      this.addNotification({
+        title: '🔔 Test Notification',
+        message: 'Notifications are working correctly!',
+        type: 'reminder',
+        priority: 'medium',
+      });
+      return true;
+    }
+    return false;
   }
 
   // Subscribe to changes

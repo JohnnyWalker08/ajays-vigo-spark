@@ -2,109 +2,117 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 @layer base {
   :root {
-    /* Light mode - Soft pastels with cyan/purple accents */
-    --background: 220 30% 97%;
-    --foreground: 230 30% 15%;
+    /* Light mode - Clean, professional with warm accents */
+    --background: 220 20% 97%;
+    --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
-    --card-foreground: 230 30% 15%;
+    --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 230 30% 15%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 190 100% 50%; /* Electric cyan */
+    --primary: 221 83% 53%; /* Royal Blue */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 270 80% 60%; /* Purple */
+    --secondary: 262 83% 58%; /* Vibrant Purple */
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 20% 90%;
-    --muted-foreground: 230 15% 50%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
 
-    --accent: 160 100% 50%; /* Neon green */
-    --accent-foreground: 230 30% 15%;
+    --accent: 142 76% 36%; /* Emerald Green */
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 80% 60%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 20% 85%;
-    --input: 220 20% 90%;
-    --ring: 190 100% 50%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 221 83% 53%;
 
-    --radius: 1rem;
+    --radius: 0.75rem;
 
     /* Custom design tokens */
-    --glass-bg: 0 0% 100% / 0.4;
-    --glass-border: 0 0% 100% / 0.2;
-    --glow-primary: 190 100% 50%;
-    --glow-secondary: 270 80% 60%;
-    --gradient-start: 200 100% 50%;
-    --gradient-mid: 270 80% 60%;
-    --gradient-end: 320 90% 55%;
+    --glass-bg: 0 0% 100% / 0.7;
+    --glass-border: 220 13% 91%;
+    --glow-primary: 221 83% 53%;
+    --glow-secondary: 262 83% 58%;
+    --gradient-start: 221 83% 53%;
+    --gradient-mid: 262 83% 58%;
+    --gradient-end: 142 76% 36%;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 221 83% 53%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
     --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-ring: 221 83% 53%;
+
+    /* Surface colors */
+    --surface-1: 0 0% 100%;
+    --surface-2: 220 14% 98%;
+    --surface-3: 220 14% 96%;
   }
 
   .dark {
-    /* Dark mode - Deep space with neon accents */
-    --background: 230 35% 8%;
-    --foreground: 0 0% 98%;
+    /* Dark mode - Deep, rich with neon accents */
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
 
-    --card: 230 30% 12%;
-    --card-foreground: 0 0% 98%;
+    --card: 224 71% 6%;
+    --card-foreground: 213 31% 91%;
 
-    --popover: 230 30% 12%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 224 71% 6%;
+    --popover-foreground: 213 31% 91%;
 
-    --primary: 190 100% 50%; /* Electric cyan */
-    --primary-foreground: 230 35% 8%;
+    --primary: 217 91% 60%; /* Bright Blue */
+    --primary-foreground: 222 47% 11%;
 
-    --secondary: 270 80% 60%; /* Purple */
+    --secondary: 270 67% 60%; /* Soft Purple */
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 230 25% 20%;
-    --muted-foreground: 0 0% 70%;
+    --muted: 223 47% 11%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 160 100% 50%; /* Neon green */
-    --accent-foreground: 230 35% 8%;
+    --accent: 142 71% 45%; /* Bright Emerald */
+    --accent-foreground: 222 47% 11%;
 
-    --destructive: 0 80% 60%;
+    --destructive: 0 63% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 230 25% 20%;
-    --input: 230 25% 20%;
-    --ring: 190 100% 50%;
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+    --ring: 217 91% 60%;
 
     /* Custom design tokens for dark mode */
-    --glass-bg: 230 30% 12% / 0.4;
-    --glass-border: 0 0% 100% / 0.1;
-    --glow-primary: 190 100% 50%;
-    --glow-secondary: 270 80% 60%;
-    --gradient-start: 200 100% 50%;
-    --gradient-mid: 270 80% 60%;
-    --gradient-end: 320 90% 55%;
+    --glass-bg: 224 71% 6% / 0.8;
+    --glass-border: 216 34% 17%;
+    --glow-primary: 217 91% 60%;
+    --glow-secondary: 270 67% 60%;
+    --gradient-start: 217 91% 60%;
+    --gradient-mid: 270 67% 60%;
+    --gradient-end: 142 71% 45%;
 
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 224 71% 5%;
+    --sidebar-foreground: 213 31% 91%;
+    --sidebar-primary: 217 91% 60%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 223 47% 11%;
+    --sidebar-accent-foreground: 213 31% 91%;
+    --sidebar-border: 216 34% 17%;
+    --sidebar-ring: 217 91% 60%;
+
+    /* Surface colors */
+    --surface-1: 224 71% 6%;
+    --surface-2: 224 71% 8%;
+    --surface-3: 224 71% 11%;
   }
 }
 
@@ -114,8 +122,13 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground font-inter;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
   }
 }
 
@@ -123,20 +136,20 @@ All colors MUST be HSL.
   /* Glassmorphism effects */
   .glass {
     background: hsl(var(--glass-bg));
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border: 1px solid hsl(var(--glass-border));
   }
 
   /* Neon glow effects */
   .glow-primary {
-    box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.3),
-                0 0 40px hsl(var(--glow-primary) / 0.2);
+    box-shadow: 0 0 20px hsl(var(--glow-primary) / 0.2),
+                0 0 40px hsl(var(--glow-primary) / 0.1);
   }
 
   .glow-secondary {
-    box-shadow: 0 0 20px hsl(var(--glow-secondary) / 0.3),
-                0 0 40px hsl(var(--glow-secondary) / 0.2);
+    box-shadow: 0 0 20px hsl(var(--glow-secondary) / 0.2),
+                0 0 40px hsl(var(--glow-secondary) / 0.1);
   }
 
   /* Animated gradient background */
@@ -162,7 +175,7 @@ All colors MUST be HSL.
 
   /* Smooth transitions */
   .transition-smooth {
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   /* Weather animations */
@@ -210,12 +223,12 @@ All colors MUST be HSL.
 
   @keyframes pulse-slow {
     0%, 100% {
-      opacity: 0.3;
+      opacity: 0.6;
       transform: scale(1);
     }
     50% {
-      opacity: 0.5;
-      transform: scale(1.1);
+      opacity: 1;
+      transform: scale(1.05);
     }
   }
 
@@ -241,12 +254,12 @@ All colors MUST be HSL.
 
   /* Glow effects for elements */
   .glow-text {
-    text-shadow: 0 0 10px hsl(var(--primary) / 0.5);
+    text-shadow: 0 0 10px hsl(var(--primary) / 0.3);
   }
 
   .glow-accent {
-    box-shadow: 0 0 20px hsl(var(--accent) / 0.3),
-                0 0 40px hsl(var(--accent) / 0.2);
+    box-shadow: 0 0 20px hsl(var(--accent) / 0.2),
+                0 0 40px hsl(var(--accent) / 0.1);
   }
 
   /* Confetti animation for achievements */
@@ -270,11 +283,11 @@ All colors MUST be HSL.
   }
 
   .glass-card {
-    @apply glass rounded-2xl border border-border/50;
+    @apply glass rounded-2xl border border-border/50 shadow-sm;
   }
 
   .glass-input {
-    @apply glass border-border/50 focus:border-primary focus:glow-primary transition-smooth;
+    @apply glass border-border/50 focus:border-primary focus:ring-1 focus:ring-primary/20 transition-smooth;
   }
 
   .neon-glow {
@@ -282,7 +295,12 @@ All colors MUST be HSL.
   }
 
   .hover-scale {
-    @apply transition-transform duration-200 hover:scale-105;
+    @apply transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98];
+  }
+
+  /* Card hover effect */
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5;
   }
 
   /* Focus Mode */
@@ -293,5 +311,30 @@ All colors MUST be HSL.
   body.focus-mode .task-manager,
   body.focus-mode .goal-manager {
     @apply opacity-100 blur-none pointer-events-auto;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+  }
+
+  /* Selection */
+  ::selection {
+    background: hsl(var(--primary) / 0.2);
+    color: hsl(var(--foreground));
   }
 }
